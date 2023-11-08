@@ -2,8 +2,6 @@ package com.example.demo.product;
 
 import jakarta.persistence.*;
 
-
-
 @Entity
 @Table(name="products")
 public class Product {
@@ -19,14 +17,17 @@ public class Product {
             strategy = GenerationType.SEQUENCE,
             generator = "product_sequence"
     )
+
     private Long id;
     private String name;
     private String description;
     private double price;
     private String unit;
 
+    //презен конструктор без който базата данни даваше грешка
     public Product() {
     }
+
 
     public Product(long id, String name, String description, double price, String unit) {
         this.id = id;

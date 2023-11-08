@@ -32,9 +32,9 @@ public class ProductController {
     }
 
     @PutMapping(path = "{productId}")
-    public void updateProduct(@PathVariable("productId") Long productId,@RequestParam(required = false) String name
-            ,@RequestParam(required = false) String description
-            )
+    public void updateProduct(@PathVariable("productId") Long productId
+            ,@RequestParam(required = false) String name
+            ,@RequestParam(required = false) String description)
     {
         productService.updateProduct(productId, name, description);
     }
