@@ -1,5 +1,5 @@
 package com.example.demo.product;
 
-public record ProductDTO(String name, double price) {
+public record ProductDTO(Long id, String name, double price) {
 
 }

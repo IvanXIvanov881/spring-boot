@@ -28,7 +28,6 @@ public class Product {
     public Product() {
     }
 
-
     public Product(long id, String name, String description, double price, String unit) {
         this.id = id;
         this.name = name;

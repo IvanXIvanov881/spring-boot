@@ -20,13 +20,28 @@ public class ProductService {
         this.productDTOMapper = productDTOMapper;
     }
 
-    public List<ProductDTO> getProducts() {
+    //GET all products
+    public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
                 .map(productDTOMapper)
                 .collect(Collectors.toList());
     }
 
+    //GET product by ID
+    public Product getProduct(Long productId) {
+        Product productToSend = productRepository.findAll()
+                .stream()
+                .filter(t -> productId.equals(t.getId()))
+                .findFirst()
+                .orElse(null);
+        if (productToSend == null) {
+            throw new IllegalStateException("product with id: " + productId + " not exists!");
+        }
+        return productToSend;
+    }
+
+    //POST new product
     public void addNewProducts(Product product) {
         Optional<Product> productOptional = productRepository.findByProductByName(product.getName());
         if (productOptional.isPresent()) {
@@ -35,24 +50,26 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    //DELETE product
     public void deleteProduct(Long productId) {
-         boolean exists = productRepository.existsById(productId);
-         if(!exists){
-             throw new IllegalStateException("product with name " + productId + " not exists!");
-         }
-         productRepository.deleteById(productId);
+        boolean exists = productRepository.existsById(productId);
+        if (!exists) {
+            throw new IllegalStateException("product with id: " + productId + " not exists!");
+        }
+        productRepository.deleteById(productId);
     }
 
+    //PUT product (name, description)
     @Transactional
-    public void updateProduct(Long productId,String name, String description) {
+    public void updateProduct(Long productId, String name, String description) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException(
                 "Product with that " + productId + " doesn't not exist"));
 
-        if (name!=null && name.length()>0 && !Objects.equals(product.getName(), name)) {
+        if (name != null && name.length() > 0 && !Objects.equals(product.getName(), name)) {
             product.setName(name);
         }
 
-       if (description!=null && description.length()>0 && !Objects.equals(product.getDescription(), description)) {
+        if (description != null && description.length() > 0 && !Objects.equals(product.getDescription(), description)) {
             product.setDescription(description);
         }
     }
