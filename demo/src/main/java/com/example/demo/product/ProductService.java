@@ -5,19 +5,26 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductDTOMapper productDTOMapper;
+
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductDTOMapper productDTOMapper) {
         this.productRepository = productRepository;
+        this.productDTOMapper = productDTOMapper;
     }
 
-    public List<Product> getProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(productDTOMapper)
+                .collect(Collectors.toList());
     }
 
     public void addNewProducts(Product product) {
