@@ -52,6 +52,7 @@ public class ProductService {
 
     //DELETE product
     public void deleteProduct(Long productId) {
+
         boolean exists = productRepository.existsById(productId);
         if (!exists) {
             throw new IllegalStateException("product with id: " + productId + " not exists!");

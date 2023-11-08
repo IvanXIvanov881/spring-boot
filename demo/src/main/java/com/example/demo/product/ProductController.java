@@ -1,13 +1,12 @@
 package com.example.demo.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 
 @RestController
 @RequestMapping(path = "/api/v1/product")
 public class ProductController {
+
 
     private final ProductService productService;
 
@@ -20,6 +19,7 @@ public class ProductController {
     public Product getProduct(@PathVariable("productId") Long productId) {
         return productService.getProduct(productId);
     }
+
     @GetMapping
     public List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
