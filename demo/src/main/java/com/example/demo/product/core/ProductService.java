@@ -18,7 +18,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     @Autowired
-    private ProductDTOConvertor productDTOConvertor;
+          private ProductDTOConvertor productDTOConvertor;
 
 
     @Autowired
@@ -31,7 +31,7 @@ public class ProductService {
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(e -> productDTOConvertor.convertProductToProductDTO(e))
+                .map(e-> productDTOConvertor.convertProductToProductDTO(e))
                 .collect(Collectors.toList());
     }
 
@@ -81,5 +81,4 @@ public class ProductService {
             product.setDescription(description);
         }
     }
-
 }

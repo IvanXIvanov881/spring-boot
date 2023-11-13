@@ -43,12 +43,10 @@ public class ProductController {
         productService.deleteProduct(productId);
     }
 
-    //PUT product
-    @PutMapping(path = "{productId}")
-    public void updateProduct(@PathVariable("productId") Long productId
-            ,@RequestParam(required = false) String name
-            ,@RequestParam(required = false) String description)
+    //PUT product by ID (name and description)
+    @PutMapping
+    public void updateProduct(@RequestBody Product product)
     {
-        productService.updateProduct(productId, name, description);
+        productService.updateProduct(product.getId(), product.getName(), product.getDescription());
     }
 }
