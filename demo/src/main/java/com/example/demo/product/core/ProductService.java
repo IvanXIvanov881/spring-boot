@@ -29,6 +29,7 @@ public class ProductService {
 
     //GET all products
     public List<ProductDTO> getAllProducts() {
+
         return productRepository.findAll()
                 .stream()
                 .map(e-> productDTOConvertor.convertProductToProductDTO(e))
@@ -48,6 +49,7 @@ public class ProductService {
         }
         return productDTOConvertor.convertProductToProductDTO(productToSend);
     }
+
 
     //POST new product
     public void addNewProducts(Product product) {
