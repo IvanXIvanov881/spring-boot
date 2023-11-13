@@ -36,16 +36,16 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-//TODO
-//    @Test
-//    void canGetAllProducts() {
-//
-//        //when
-//        productService.getAllProducts();
-//
-//        //then
-//        verify(productRepository).findAll();
-//    }
+
+    @Test
+    void canGetAllProducts() {
+
+        //when
+        productService.getAllProducts();
+
+        //then
+        verify(productRepository).findAll();
+    }
 
 
     @Test
