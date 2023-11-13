@@ -18,16 +18,16 @@ public class ProductController {
         this.productService = productService;
     }
 
-    //GET all
-    @GetMapping
+//    //GET all
+    @GetMapping("/all")
     public List<ProductDTO> getProducts() {
         return productService.getAllProducts();
     }
 
-    //GET One product by ID
-    @GetMapping(path = "{productId}")
-    public ProductDTO getProduct(@PathVariable("productId") Long productId) {
-        return productService.getProduct(productId);
+    //GET One product by ID or All
+    @GetMapping
+    public ProductDTO getProduct(@RequestBody ProductDTO product) {
+        return productService.getProduct(product.getId());
     }
 
     //POST some product

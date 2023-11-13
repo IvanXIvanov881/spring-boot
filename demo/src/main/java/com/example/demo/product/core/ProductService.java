@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class ProductService {
         this.productDTOConvertor = productDTOConvertor;
     }
 
-    //GET all products
+   // GET all products
     public List<ProductDTO> getAllProducts() {
 
         return productRepository.findAll()
@@ -48,6 +49,7 @@ public class ProductService {
             throw new IllegalStateException("product with id: " + productId + " not exists!");
         }
         return productDTOConvertor.convertProductToProductDTO(productToSend);
+
     }
 
 
