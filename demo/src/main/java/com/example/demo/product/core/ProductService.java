@@ -1,11 +1,13 @@
 package com.example.demo.product.core;
-import com.example.demo.product.repostory.ProductRepository;
+
 import com.example.demo.product.modelMapper.ProductDTO;
 import com.example.demo.product.modelMapper.ProductDTOConvertor;
 import com.example.demo.product.productConfiguration.Product;
+import com.example.demo.product.repostory.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,7 +18,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     @Autowired
-    ProductDTOConvertor productDTOConvertor;
+    private ProductDTOConvertor productDTOConvertor;
 
 
     @Autowired
@@ -29,7 +31,7 @@ public class ProductService {
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
-                 .map(e-> productDTOConvertor.convertProductToProductDTO(e))
+                .map(e -> productDTOConvertor.convertProductToProductDTO(e))
                 .collect(Collectors.toList());
     }
 
@@ -44,9 +46,7 @@ public class ProductService {
         if (productToSend == null) {
             throw new IllegalStateException("product with id: " + productId + " not exists!");
         }
-
-        ProductDTO productDTO = productDTOConvertor.convertProductToProductDTO(productToSend);
-        return productDTO;
+        return productDTOConvertor.convertProductToProductDTO(productToSend);
     }
 
     //POST new product
@@ -60,7 +60,6 @@ public class ProductService {
 
     //DELETE product
     public void deleteProduct(Long productId) {
-
         boolean exists = productRepository.existsById(productId);
         if (!exists) {
             throw new IllegalStateException("product with id: " + productId + " not exists!");
@@ -82,4 +81,5 @@ public class ProductService {
             product.setDescription(description);
         }
     }
+
 }

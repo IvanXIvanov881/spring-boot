@@ -24,6 +24,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    //GET One product by ID
     @GetMapping(path = "{productId}")
     public ProductDTO getProduct(@PathVariable("productId") Long productId) {
         return productService.getProduct(productId);
@@ -36,8 +37,9 @@ public class ProductController {
     }
 
     //DELETE product by ID
-    @DeleteMapping(path = "{productId}")
-    public void deleteProduct(@PathVariable("productId") Long productId) {
+    @DeleteMapping
+    public void deleteProduct(@RequestBody Product product) {
+        Long productId = product.getId();
         productService.deleteProduct(productId);
     }
 
