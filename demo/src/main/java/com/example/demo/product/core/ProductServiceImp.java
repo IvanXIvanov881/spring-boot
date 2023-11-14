@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,15 +39,8 @@ public class ProductServiceImp implements ProductService{
 
     //GET product by ID
     public ProductDTO getProduct(Long productId) {
-        Product productToSend = productRepository.findAll()
-                .stream()
-                .filter(t -> productId.equals(t.getId()))
-                .findFirst()
-                .orElse(null);
-
-        if (productToSend == null) {
-            throw new IllegalStateException("product with id: " + productId + " not exists!");
-        }
+        Product productToSend = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalStateException("product with id: " + productId + " not exists!"));
 
         return productDTOConvertor.convertProductToProductDTO(productToSend);
     }
@@ -56,13 +48,12 @@ public class ProductServiceImp implements ProductService{
 
     //POST new product
     public void addNewProducts(ProductDTO productDTO) {
-        Optional<ProductDTO> productOptional = productRepository.findByName(productDTO.getName());
 
-        if (productOptional.isPresent()) {
-            throw new IllegalStateException("product exist!");
-        }
+        Product product = productDTOConvertor.convertProductDTOToProduct(productDTO);
 
-        productRepository.save(productDTOConvertor.convertProductDTOToProduct(productDTO));
+        Product productOptional = productRepository.findByName(product.getName()).orElseThrow(()-> new IllegalStateException("product exist!"));
+
+        productRepository.save(productOptional);
     }
 
     //DELETE product
@@ -88,7 +79,5 @@ public class ProductServiceImp implements ProductService{
         if (productDTO.getDescription()!=null && productDTO.getDescription().length()>0 && !Objects.equals(product.getDescription(), productDTO.getDescription())) {
             product.setDescription(productDTO.getDescription());
         }
-
-
     }
 }

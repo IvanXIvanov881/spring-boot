@@ -29,7 +29,7 @@ class ProductRepositoryTest {
         underTest.save(product1);
 
         //when
-        Optional<ProductDTO> expected = underTest.findByName("notExistingName");
+        Optional<Product> expected = underTest.findByName("notExistingName");
 
         //then
         assertThat(expected).isEmpty();
