@@ -1,5 +1,7 @@
 package com.example.demo.product.repostory;
 
+import com.example.demo.product.modelMapper.ProductDTO;
+import com.example.demo.product.modelMapper.ProductDTOConvertor;
 import com.example.demo.product.productConfiguration.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,24 +18,6 @@ class ProductRepositoryTest {
     private ProductRepository underTest;
 
     @Test
-    void shouldCheckForExistingName() {
-        //given
-        Product product1 = new Product(
-                "productTest1",
-                "testdiscription",
-                2.80,
-                "kg"
-        );
-        underTest.save(product1);
-
-        //when
-        Optional<Product> expected = underTest.findByProductByName(product1.getName());
-
-        //then
-        assertThat(expected).isNotEmpty();
-    }
-
-    @Test
     void shouldCheckForNotExistingName() {
         //given
         Product product1 = new Product(
@@ -45,7 +29,7 @@ class ProductRepositoryTest {
         underTest.save(product1);
 
         //when
-        Optional<Product> expected = underTest.findByProductByName("notExistingName");
+        Optional<ProductDTO> expected = underTest.findByName("notExistingName");
 
         //then
         assertThat(expected).isEmpty();

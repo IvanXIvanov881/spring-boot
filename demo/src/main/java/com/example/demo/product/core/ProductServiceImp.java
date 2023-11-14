@@ -8,25 +8,25 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductService {
+public class ProductServiceImp implements ProductService{
 
     private final ProductRepository productRepository;
-    @Autowired
-          private ProductDTOConvertor productDTOConvertor;
+
+    private final ProductDTOConvertor productDTOConvertor;
 
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductDTOConvertor productDTOConvertor) {
+    public ProductServiceImp(ProductRepository productRepository, ProductDTOConvertor productDTOConvertor) {
         this.productRepository = productRepository;
         this.productDTOConvertor = productDTOConvertor;
     }
+
 
    // GET all products
     public List<ProductDTO> getAllProducts() {
@@ -45,21 +45,24 @@ public class ProductService {
                 .filter(t -> productId.equals(t.getId()))
                 .findFirst()
                 .orElse(null);
+
         if (productToSend == null) {
             throw new IllegalStateException("product with id: " + productId + " not exists!");
         }
-        return productDTOConvertor.convertProductToProductDTO(productToSend);
 
+        return productDTOConvertor.convertProductToProductDTO(productToSend);
     }
 
 
     //POST new product
-    public void addNewProducts(Product product) {
-        Optional<Product> productOptional = productRepository.findByProductByName(product.getName());
+    public void addNewProducts(ProductDTO productDTO) {
+        Optional<ProductDTO> productOptional = productRepository.findByName(productDTO.getName());
+
         if (productOptional.isPresent()) {
             throw new IllegalStateException("product exist!");
         }
-        productRepository.save(product);
+
+        productRepository.save(productDTOConvertor.convertProductDTOToProduct(productDTO));
     }
 
     //DELETE product
@@ -71,18 +74,21 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
+
     //PUT product (name, description)
     @Transactional
-    public void updateProduct(Long productId, String name, String description) {
+    public void updateProduct(Long productId, ProductDTO productDTO) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException(
                 "Product with that " + productId + " doesn't not exist"));
 
-        if (name != null && name.length() > 0 && !Objects.equals(product.getName(), name)) {
-            product.setName(name);
+        if (productDTO.getName()!=null && productDTO.getName().length()>0 && !Objects.equals(product.getName(), productDTO.getName())) {
+            product.setName(productDTO.getName());
         }
 
-        if (description != null && description.length() > 0 && !Objects.equals(product.getDescription(), description)) {
-            product.setDescription(description);
+        if (productDTO.getDescription()!=null && productDTO.getDescription().length()>0 && !Objects.equals(product.getDescription(), productDTO.getDescription())) {
+            product.setDescription(productDTO.getDescription());
         }
+
+
     }
 }
