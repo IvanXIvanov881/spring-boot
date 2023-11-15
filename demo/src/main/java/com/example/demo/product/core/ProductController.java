@@ -42,7 +42,7 @@ public class ProductController {
         productService.deleteProduct(productId);
     }
 
-    //PUT product by ID (name and description)
+    //PUT product by ID (name, description, kilograms, unit)
     @PutMapping(path = "{productId}")
     public void updateProduct(@PathVariable("productId") Long productId
             ,@RequestBody(required = false) ProductDTO productDTO)

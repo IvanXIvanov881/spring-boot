@@ -6,13 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
 @Repository
 public interface ProductRepository
         extends JpaRepository<Product, Long> {
 
-    //    @Query("SELECT name FROM Product products WHERE products.name = ?1")
-    //    Optional<ProductDTO> findByProductByName(String name);
+//        @Query("SELECT name FROM Product products WHERE products.name = ?1")
+//        Optional<ProductDTO> findByProductByName(String name);
 
     Optional<Product> findByName(String name);
 

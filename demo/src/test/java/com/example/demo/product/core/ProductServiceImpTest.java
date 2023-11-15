@@ -39,7 +39,6 @@ class ProductServiceImpTest {
     }
 
 
-
     @Test
     void getOneProductByIDException() {
 
@@ -122,13 +121,14 @@ class ProductServiceImpTest {
                 222,
                 "kg");
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setName("sss");
+        productDTO.setName("Ivan");
 
-        when(productDTOConvertor.convertProductDTOToProduct(productDTO)).thenReturn(product);
 
-        when(productRepository.findByName("Ivan")).thenReturn(Optional.empty());
+        when(productRepository.findByName("Ivan")).thenReturn(Optional.of(product));
 
-        assertThrows(IllegalStateException.class, () -> productServiceImp.addNewProducts(productDTO));
+        //when
+        assertThatThrownBy(() -> productServiceImp.addNewProducts(productDTO)).isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("product exist!");
     }
 
     @Test
@@ -146,12 +146,11 @@ class ProductServiceImpTest {
                 "kg");
 
         when(productDTOConvertor.convertProductDTOToProduct(productDTO)).thenReturn(product);
-        when(productRepository.findByName("Ivan")).thenReturn(Optional.of(product));
+        when(productRepository.findByName("Ivan")).thenReturn(Optional.empty());
         //when
         productServiceImp.addNewProducts(productDTO);
 
         //then
-
         verify(productRepository).save(product);
     }
 
@@ -161,6 +160,8 @@ class ProductServiceImpTest {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName("DDD");
         productDTO.setDescription("ddssdffff");
+        productDTO.setPrice(100);
+        productDTO.setUnit("lb");
 
         Product product1 = new Product(
                 1L,
@@ -178,6 +179,8 @@ class ProductServiceImpTest {
 
         assertEquals("DDD", product1.getName());
         assertEquals("ddssdffff", product1.getDescription());
+        assertEquals(100, product1.getPrice());
+        assertEquals("lb", product1.getUnit());
 
     }
 }

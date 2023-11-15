@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,12 +49,11 @@ public class ProductServiceImp implements ProductService{
 
     //POST new product
     public void addNewProducts(ProductDTO productDTO) {
-
-        Product product = productDTOConvertor.convertProductDTOToProduct(productDTO);
-
-        Product productOptional = productRepository.findByName(product.getName()).orElseThrow(()-> new IllegalStateException("product exist!"));
-
-        productRepository.save(productOptional);
+        Optional<Product> productOptional = productRepository.findByName(productDTO.getName());
+        if (productOptional.isPresent()) {
+            throw new IllegalStateException("product exist!");
+        }
+        productRepository.save(productDTOConvertor.convertProductDTOToProduct(productDTO));
     }
 
     //DELETE product
@@ -78,6 +78,14 @@ public class ProductServiceImp implements ProductService{
 
         if (productDTO.getDescription()!=null && productDTO.getDescription().length()>0 && !Objects.equals(product.getDescription(), productDTO.getDescription())) {
             product.setDescription(productDTO.getDescription());
+        }
+
+        if (productDTO.getPrice()>=0 && !Objects.equals(product.getPrice(), productDTO.getPrice())) {
+            product.setPrice(productDTO.getPrice());
+        }
+
+        if (productDTO.getUnit()!=null && productDTO.getUnit().length()>0 && !Objects.equals(product.getUnit(), productDTO.getUnit())) {
+            product.setUnit(productDTO.getUnit());
         }
     }
 }
