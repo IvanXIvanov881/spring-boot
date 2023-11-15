@@ -81,10 +81,13 @@ class ProductServiceImpTest {
     @Test
     void updateProductException() {
 
-        ProductDTO product1 = new ProductDTO();
-        product1.setName("Ivan");
+        Product product1 = new Product(    1L,"Ivan",
+                "asd",
+                222,
+                "kg");
 
-        assertThatThrownBy(() -> productServiceImp.updateProduct(1L, product1)).isInstanceOf(IllegalStateException.class)
+
+        assertThatThrownBy(() -> productServiceImp.updateProduct(product1)).isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Product with that 1 doesn't not exist");
 
     }
@@ -157,30 +160,30 @@ class ProductServiceImpTest {
     @Test
     void shouldUpgradeProductInfo() {
 
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setName("DDD");
-        productDTO.setDescription("ddssdffff");
-        productDTO.setPrice(100);
-        productDTO.setUnit("lb");
+        Product product = new Product(  1L, "Ivan",
+                "asd",
+                222,
+                "kg");
+
 
         Product product1 = new Product(
                 1L,
-                "Ivan",
-                "asd",
-                20,
-                "kg");
+                "DDD",
+                "Test",
+                100,
+                "lb");
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
 
-        productServiceImp.updateProduct(1L, productDTO);
+        productServiceImp.updateProduct(product);
 
-        product1.setName(productDTO.getName());
-        product1.setDescription(productDTO.getDescription());
+        product1.setName(product.getName());
+        product1.setDescription(product.getDescription());
 
-        assertEquals("DDD", product1.getName());
-        assertEquals("ddssdffff", product1.getDescription());
-        assertEquals(100, product1.getPrice());
-        assertEquals("lb", product1.getUnit());
+        assertEquals("Ivan", product1.getName());
+        assertEquals("asd", product1.getDescription());
+        assertEquals(222, product1.getPrice());
+        assertEquals("kg", product1.getUnit());
 
     }
 }

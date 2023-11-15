@@ -1,6 +1,7 @@
 package com.example.demo.product.core;
 
 import com.example.demo.product.modelMapper.ProductDTO;
+import com.example.demo.product.productConfiguration.Product;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface ProductService {
 
     void deleteProduct(Long productId);
 
-    void updateProduct(Long productId, ProductDTO productDTO);
+    void updateProduct(Product product);
 }

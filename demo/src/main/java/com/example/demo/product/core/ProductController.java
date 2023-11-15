@@ -1,5 +1,6 @@
 package com.example.demo.product.core;
 import com.example.demo.product.modelMapper.ProductDTO;
+import com.example.demo.product.productConfiguration.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,11 +43,10 @@ public class ProductController {
         productService.deleteProduct(productId);
     }
 
-    //PUT product by ID (name, description, kilograms, unit)
-    @PutMapping(path = "{productId}")
-    public void updateProduct(@PathVariable("productId") Long productId
-            ,@RequestBody(required = false) ProductDTO productDTO)
+    //PUT product by ID (name, description, price and unit)
+    @PutMapping
+    public void updateProduct(@RequestBody Product product)
     {
-        productService.updateProduct(productId, productDTO);
+        productService.updateProduct(product);
     }
 }

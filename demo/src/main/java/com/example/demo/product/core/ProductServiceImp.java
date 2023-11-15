@@ -68,24 +68,24 @@ public class ProductServiceImp implements ProductService{
 
     //PUT product (name, description)
     @Transactional
-    public void updateProduct(Long productId, ProductDTO productDTO) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException(
-                "Product with that " + productId + " doesn't not exist"));
+    public void updateProduct(Product productUpdate) {
+        Product product = productRepository.findById(productUpdate.getId()).orElseThrow(() -> new IllegalStateException(
+                "Product with that " + productUpdate.getId() + " doesn't not exist"));
 
-        if (productDTO.getName()!=null && productDTO.getName().length()>0 && !Objects.equals(product.getName(), productDTO.getName())) {
-            product.setName(productDTO.getName());
+        if (productUpdate.getName()!=null && productUpdate.getName().length()>0 && !Objects.equals(product.getName(), productUpdate.getName())) {
+            product.setName(productUpdate.getName());
         }
 
-        if (productDTO.getDescription()!=null && productDTO.getDescription().length()>0 && !Objects.equals(product.getDescription(), productDTO.getDescription())) {
-            product.setDescription(productDTO.getDescription());
+        if (productUpdate.getDescription()!=null && productUpdate.getDescription().length()>0 && !Objects.equals(product.getDescription(), productUpdate.getDescription())) {
+            product.setDescription(productUpdate.getDescription());
         }
 
-        if (productDTO.getPrice()>=0 && !Objects.equals(product.getPrice(), productDTO.getPrice())) {
-            product.setPrice(productDTO.getPrice());
+        if (productUpdate.getPrice()>=0 && !Objects.equals(product.getPrice(), productUpdate.getPrice())) {
+            product.setPrice(productUpdate.getPrice());
         }
 
-        if (productDTO.getUnit()!=null && productDTO.getUnit().length()>0 && !Objects.equals(product.getUnit(), productDTO.getUnit())) {
-            product.setUnit(productDTO.getUnit());
+        if (productUpdate.getUnit()!=null && productUpdate.getUnit().length()>0 && !Objects.equals(product.getUnit(), productUpdate.getUnit())) {
+            product.setUnit(productUpdate.getUnit());
         }
     }
 }
