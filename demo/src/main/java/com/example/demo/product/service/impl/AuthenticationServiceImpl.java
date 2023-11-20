@@ -4,7 +4,6 @@ import com.example.demo.product.service.AuthenticationService;
 import com.example.demo.product.dto.AuthenticationRequestDTO;
 import com.example.demo.product.dto.AuthenticationResponseDTO;
 import com.example.demo.product.dto.RegisterRequestDTO;
-import com.example.demo.product.jwt.JwtService;
 import com.example.demo.product.enums.Role;
 import com.example.demo.product.entity.User;
 import com.example.demo.product.repository.UserRepository;
@@ -20,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final JwtServiceImpl jwtServiceImpl;
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponseDTO register(RegisterRequestDTO request) {
@@ -32,7 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role(Role.USER)
                 .build();
         repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtServiceImpl.generateToken(user);
         return AuthenticationResponseDTO.builder()
                 .token(jwtToken)
                 .build();
@@ -48,7 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtServiceImpl.generateToken(user);
         return AuthenticationResponseDTO.builder()
                 .token(jwtToken)
                 .build();

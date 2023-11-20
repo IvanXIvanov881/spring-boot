@@ -1,5 +1,6 @@
-package com.example.demo.product.jwt;
+package com.example.demo.product.service.impl;
 
+import com.example.demo.product.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtService {
+public class JwtServiceImpl implements JwtService {
 
     private final static String SECRET_KEY = "b1ea8e583ce731eefb16d438a06833615b9455f0a52e7c4d3bfe4b185bd278f6";
     public String extractUsername(String token) {

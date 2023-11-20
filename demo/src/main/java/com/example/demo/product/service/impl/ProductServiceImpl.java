@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.nonNull;
 
 @Service
-public class ProductServiceImp implements ProductService {
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
@@ -27,7 +27,7 @@ public class ProductServiceImp implements ProductService {
 
 
     @Autowired
-    public ProductServiceImp(ProductRepository productRepository, ProductDTOConvertor productDTOConvertor) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductDTOConvertor productDTOConvertor) {
         this.productRepository = productRepository;
         this.productDTOConvertor = productDTOConvertor;
     }

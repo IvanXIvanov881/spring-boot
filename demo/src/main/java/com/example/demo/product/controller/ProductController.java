@@ -1,6 +1,6 @@
 package com.example.demo.product.controller;
 import com.example.demo.product.service.ProductService;
-import com.example.demo.product.service.impl.ProductServiceImp;
+import com.example.demo.product.service.impl.ProductServiceImpl;
 import com.example.demo.product.dto.ProductDTO;
 import com.example.demo.product.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,8 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    public ProductController(ProductServiceImp productServiceImp) {
-        this.productService = productServiceImp;
+    public ProductController(ProductServiceImpl productServiceImpl) {
+        this.productService = productServiceImpl;
     }
 
 //    //GET all

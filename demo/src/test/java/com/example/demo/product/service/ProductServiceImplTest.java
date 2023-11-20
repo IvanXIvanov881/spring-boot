@@ -1,6 +1,6 @@
 package com.example.demo.product.service;
 
-import com.example.demo.product.service.impl.ProductServiceImp;
+import com.example.demo.product.service.impl.ProductServiceImpl;
 import com.example.demo.product.dto.ProductDTO;
 import com.example.demo.product.convertor.ProductDTOConvertor;
 import com.example.demo.product.entity.Product;
@@ -26,14 +26,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceImpTest {
+class ProductServiceImplTest {
 
     @Mock
     private ProductRepository productRepository;
     @Mock
     private ProductDTOConvertor productDTOConvertor;
     @InjectMocks
-    private ProductServiceImp productServiceImp;
+    private ProductServiceImpl productServiceImpl;
     @Mock
     private Authentication authentication;
 
@@ -44,7 +44,7 @@ class ProductServiceImpTest {
 
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
         //when
-        assertThatThrownBy(() -> productServiceImp.getProduct(1L))
+        assertThatThrownBy(() -> productServiceImpl.getProduct(1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("product with id: 1 not exists!");
     }
@@ -54,7 +54,7 @@ class ProductServiceImpTest {
     void deleteProduct_tryToDeleteNotExistingProduct_expectedException() {
 
         //when
-        assertThatThrownBy(() -> productServiceImp.deleteProduct(1L))
+        assertThatThrownBy(() -> productServiceImpl.deleteProduct(1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("product with id: 1 not exists!");
         //then
@@ -69,7 +69,7 @@ class ProductServiceImpTest {
         //when
         when(productRepository.existsById(1L)).thenReturn(true);
 
-        productServiceImp.deleteProduct(1L);
+        productServiceImpl.deleteProduct(1L);
 
         //then
         verify(productRepository).deleteById(1L);
@@ -83,7 +83,7 @@ class ProductServiceImpTest {
 
         product1.setId(1L);
 
-        assertThatThrownBy(() -> productServiceImp.updateProduct(product1)).isInstanceOf(IllegalStateException.class)
+        assertThatThrownBy(() -> productServiceImpl.updateProduct(product1)).isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Product with that 1 doesn't not exist");
 
     }
@@ -104,7 +104,7 @@ class ProductServiceImpTest {
 
         when(productDTOConvertor.convertProductToProductDTO(product1)).thenReturn(productDTO);
 
-        final ProductDTO product2 = productServiceImp.getProduct(1L);
+        final ProductDTO product2 = productServiceImpl.getProduct(1L);
 
         assertNotNull(product2);
 
@@ -122,7 +122,7 @@ class ProductServiceImpTest {
         when(productRepository.findByName("Ivan")).thenReturn(Optional.of(product));
 
         //when
-        assertThatThrownBy(() -> productServiceImp.addNewProducts(productDTO)).isInstanceOf(IllegalStateException.class)
+        assertThatThrownBy(() -> productServiceImpl.addNewProducts(productDTO)).isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("product exist!");
     }
 
@@ -138,7 +138,7 @@ class ProductServiceImpTest {
         product.setUnit("kg");
         when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
 
-        productServiceImp.updateProduct(product);
+        productServiceImpl.updateProduct(product);
 
         product1.setName(product.getName());
         product1.setDescription(product.getDescription());
@@ -171,7 +171,7 @@ class ProductServiceImpTest {
 
         when(productDTOConvertor.convertProductDTOToProduct(productDTO)).thenReturn(product);
 
-        productServiceImp.addNewProducts(productDTO);
+        productServiceImpl.addNewProducts(productDTO);
 
         verify(productRepository).save(product);
 
@@ -191,7 +191,7 @@ class ProductServiceImpTest {
         when(authentication.getPrincipal()).thenReturn(user);
         when(productRepository.findAllByUserId(1L)).thenReturn(productList);
 
-        productServiceImp.getAllProducts();
+        productServiceImpl.getAllProducts();
         final List<Product> allByUserId = productRepository.findAllByUserId(1L);
 
         assertNotNull(allByUserId);
