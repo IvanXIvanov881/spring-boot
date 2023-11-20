@@ -20,12 +20,7 @@ class ProductRepositoryTest {
     @Test
     void shouldCheckForNotExistingName() {
         //given
-        Product product1 = new Product(
-                "productTest1",
-                "testdiscription",
-                2.80,
-                "kg"
-        );
+        Product product1 = new Product();
         underTest.save(product1);
 
         //when

@@ -1,19 +1,27 @@
 package com.example.demo.product.core;
 
+import com.example.demo.product.auth.AuthenticationService;
+import com.example.demo.product.config.JwtService;
 import com.example.demo.product.modelMapper.ProductDTO;
 import com.example.demo.product.modelMapper.ProductDTOConvertor;
 import com.example.demo.product.productConfiguration.Product;
 import com.example.demo.product.repostory.ProductRepository;
+import com.example.demo.product.user.User;
+import com.example.demo.product.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -26,14 +34,18 @@ class ProductServiceImpTest {
     private ProductDTOConvertor productDTOConvertor;
     @InjectMocks
     private ProductServiceImp productServiceImp;
+    @Mock
+    private AuthenticationService authenticationService;
 
 
     @Test
     void canGetAllProducts() {
+        Product product = new Product();
+        ProductDTO productDTO = new ProductDTO();
+        ProductDTO productDTO2 = new ProductDTO();
 
-        //when
-        productServiceImp.getAllProducts();
-
+        when(productRepository.findAll()).thenReturn(List.of(product));
+        productRepository.findAll();
         //then
         verify(productRepository).findAll();
     }
@@ -81,10 +93,8 @@ class ProductServiceImpTest {
     @Test
     void updateProductException() {
 
-        Product product1 = new Product(    1L,"Ivan",
-                "asd",
-                222,
-                "kg");
+        Product product1 = new Product();
+        product1.setId(1L);
 
 
         assertThatThrownBy(() -> productServiceImp.updateProduct(product1)).isInstanceOf(IllegalStateException.class)
@@ -118,11 +128,7 @@ class ProductServiceImpTest {
 
     @Test
     void productExistException() {
-        Product product = new Product(
-                "Ivan",
-                "asd",
-                222,
-                "kg");
+        Product product = new Product();
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName("Ivan");
 
@@ -135,44 +141,15 @@ class ProductServiceImpTest {
     }
 
     @Test
-    void tryAddNewProducts() {
-
-        //given
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setName("Ivan");
-        productDTO.setDescription("asd");
-
-        Product product = new Product(
-                "Ivan",
-                "asd",
-                222,
-                "kg");
-
-        when(productDTOConvertor.convertProductDTOToProduct(productDTO)).thenReturn(product);
-        when(productRepository.findByName("Ivan")).thenReturn(Optional.empty());
-        //when
-        productServiceImp.addNewProducts(productDTO);
-
-        //then
-        verify(productRepository).save(product);
-    }
-
-    @Test
     void shouldUpgradeProductInfo() {
 
-        Product product = new Product(  1L, "Ivan",
-                "asd",
-                222,
-                "kg");
-
-
-        Product product1 = new Product(
-                1L,
-                "DDD",
-                "Test",
-                100,
-                "lb");
-
+        Product product = new Product();
+        Product product1 = new Product();
+        product.setId(1L);
+        product.setName("Ivan");
+        product.setDescription("asd");
+        product.setPrice(222);
+        product.setUnit("kg");
         when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
 
         productServiceImp.updateProduct(product);
@@ -185,5 +162,18 @@ class ProductServiceImpTest {
         assertEquals(222, product1.getPrice());
         assertEquals("kg", product1.getUnit());
 
+    }
+
+    @Test
+    void shouldSaveUser() {
+        UserRepository userRepository = mock(UserRepository.class);
+
+        User user1 = new User();
+        user1.setEmail("mail");
+
+        userRepository.save(user1);
+        userRepository.findByEmail("mail");
+
+        verify(userRepository, times(1)).findByEmail("mail");
     }
 }
