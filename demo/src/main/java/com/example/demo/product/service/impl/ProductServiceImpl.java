@@ -32,12 +32,14 @@ public class ProductServiceImpl implements ProductService {
         this.productDTOConvertor = productDTOConvertor;
     }
 
-
     // GET all products
     public List<Product> getAllProducts() {
+        return  productRepository.findAll();
+    }
 
+    // GET my products
+    public List<Product> getMyProducts() {
         User currentUser = getCurrentUser();
-
         return  productRepository.findAllByUserId(currentUser.getId());
     }
 

@@ -25,8 +25,13 @@ public class ProductController {
     }
 
     //    //GET all
+    @GetMapping("/my")
+    public List<ProductDTO> getMyProducts() {
+        return productDTOConvertor.convertAllProductToProductDTO(productService.getMyProducts());
+    }
+
     @GetMapping("/all")
-    public List<ProductDTO> getProducts() {
+    public List<ProductDTO> getAllProducts() {
         return productDTOConvertor.convertAllProductToProductDTO(productService.getAllProducts());
     }
 

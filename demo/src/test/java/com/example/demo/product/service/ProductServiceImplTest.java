@@ -179,7 +179,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void getAllProducts_getAllUserProducts_expectedNotNull() {
+    void getMyProducts_getMyUserProducts_expectedNotNull() {
 
         User user = new User();
         user.setId(1L);
@@ -193,10 +193,19 @@ class ProductServiceImplTest {
         when(authentication.getPrincipal()).thenReturn(user);
         when(productRepository.findAllByUserId(1L)).thenReturn(productList);
 
-        final List<Product> allProducts = productServiceImpl.getAllProducts();
+        final List<Product> allProducts = productServiceImpl.getMyProducts();
 
         assertEquals("apple", allProducts.get(0).getName());
         assertEquals("ivan", allProducts.get(0).getUser().getFirstname());
 
+    }
+
+    @Test
+    void getAllProducts_shouldGetAllProducts_ExpectedToReturnAllProducts() {
+
+        //when
+        productServiceImpl.getAllProducts();
+        //then
+        verify(productRepository).findAll();
     }
 }

@@ -6,6 +6,7 @@ import com.example.demo.product.dto.RegisterRequestDTO;
 import com.example.demo.product.enums.Role;
 import com.example.demo.product.entity.User;
 import com.example.demo.product.repository.UserRepository;
+import com.example.demo.product.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl implements com.example.demo.product.service.AuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
