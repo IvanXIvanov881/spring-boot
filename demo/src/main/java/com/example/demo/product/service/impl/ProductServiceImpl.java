@@ -1,5 +1,4 @@
 package com.example.demo.product.service.impl;
-
 import com.example.demo.product.service.ProductService;
 import com.example.demo.product.dto.ProductDTO;
 import com.example.demo.product.convertor.ProductDTOConvertor;
@@ -10,12 +9,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import static java.util.Objects.nonNull;
 
 @Service
@@ -24,7 +20,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     private final ProductDTOConvertor productDTOConvertor;
-
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, ProductDTOConvertor productDTOConvertor) {
@@ -50,7 +45,6 @@ public class ProductServiceImpl implements ProductService {
         return productDTOConvertor.convertProductToProductDTO(productToSend);
     }
 
-
     //POST new product
     public void addNewProducts(ProductDTO productDTO) {
         Optional<Product> productOptional = productRepository.findByName(productDTO.getName());
@@ -74,7 +68,6 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.deleteById(productId);
     }
-
 
     //PUT product (name, description)
     @Transactional
@@ -107,4 +100,5 @@ public class ProductServiceImpl implements ProductService {
         }
         return currentUser;
     }
+
 }

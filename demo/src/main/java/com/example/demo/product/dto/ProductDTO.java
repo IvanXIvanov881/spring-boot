@@ -1,5 +1,4 @@
 package com.example.demo.product.dto;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

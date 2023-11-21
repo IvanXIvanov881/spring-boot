@@ -13,17 +13,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class ProductRepositoryTest {
 
     @Autowired
-    private ProductRepository underTest;
+    private ProductRepository productRepository;
 
     @Test
     void shouldCheckForNotExistingName() {
         //given
         Product product1 = new Product();
 
-        underTest.save(product1);
+        productRepository.save(product1);
 
         //when
-        Optional<Product> expected = underTest.findByName("notExistingName");
+        Optional<Product> expected = productRepository.findByName("notExistingName");
 
         //then
         assertThat(expected).isEmpty();

@@ -1,5 +1,4 @@
 package com.example.demo.product.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +13,5 @@ public class RegisterRequestDTO {
     private String lastname;
     private String email;
     private String password;
+
 }

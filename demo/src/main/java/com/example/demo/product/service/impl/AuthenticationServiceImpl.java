@@ -1,5 +1,4 @@
 package com.example.demo.product.service.impl;
-
 import com.example.demo.product.dto.AuthenticationRequestDTO;
 import com.example.demo.product.dto.AuthenticationResponseDTO;
 import com.example.demo.product.dto.RegisterRequestDTO;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtServiceImpl jwtServiceImpl;
     private final AuthenticationManager authenticationManager;
@@ -30,13 +29,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-        repository.save(user);
+        userRepository.save(user);
         var jwtToken = jwtServiceImpl.generateToken(user);
         return AuthenticationResponseDTO.builder()
                 .token(jwtToken)
                 .build();
     }
-
 
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
         authenticationManager.authenticate(
@@ -45,12 +43,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
+        var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtServiceImpl.generateToken(user);
         return AuthenticationResponseDTO.builder()
                 .token(jwtToken)
                 .build();
-
     }
+
 }

@@ -1,5 +1,4 @@
 package com.example.demo.product.entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,7 +20,6 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     @Override
     public String toString() {
         return "Product{" +
@@ -32,4 +30,5 @@ public class Product {
                 ", unit='" + unit + '\'' +
                 '}';
     }
+
 }
