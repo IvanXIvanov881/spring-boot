@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -181,19 +182,21 @@ class ProductServiceImplTest {
     void getAllProducts_getAllUserProducts_expectedNotNull() {
 
         User user = new User();
+        user.setId(1L);
+        user.setFirstname("ivan");
         Product product = new Product();
+        product.setUser(user);
+        product.setName("apple");
         List<Product> productList = new ArrayList<>();
         productList.add(product);
-        user.setId(1L);
-        user.setProducts(productList);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         when(authentication.getPrincipal()).thenReturn(user);
         when(productRepository.findAllByUserId(1L)).thenReturn(productList);
 
-        productServiceImpl.getAllProducts();
-        final List<Product> allByUserId = productRepository.findAllByUserId(1L);
+        final List<Product> allProducts = productServiceImpl.getAllProducts();
 
-        assertNotNull(allByUserId);
+        assertEquals("apple", allProducts.get(0).getName());
+        assertEquals("ivan", allProducts.get(0).getUser().getFirstname());
+
     }
 }

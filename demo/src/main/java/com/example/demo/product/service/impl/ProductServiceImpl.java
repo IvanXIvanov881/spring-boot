@@ -34,12 +34,11 @@ public class ProductServiceImpl implements ProductService {
 
 
     // GET all products
-    public List<ProductDTO> getAllProducts() {
+    public List<Product> getAllProducts() {
 
         User currentUser = getCurrentUser();
 
-        return  productRepository.findAllByUserId(currentUser.getId()).stream().map(productDTOConvertor::convertProductToProductDTO)
-                .collect(Collectors.toList());
+        return  productRepository.findAllByUserId(currentUser.getId());
     }
 
     //GET product by ID

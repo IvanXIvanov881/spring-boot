@@ -1,6 +1,5 @@
 package com.example.demo.product.entity;
 
-import com.example.demo.product.entity.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,7 +16,6 @@ public class Product {
     private String description;
     private double price;
     private String unit;
-
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,8 +1,9 @@
 package com.example.demo.product.controller;
-import com.example.demo.product.service.ProductService;
-import com.example.demo.product.service.impl.ProductServiceImpl;
+
+import com.example.demo.product.convertor.ProductDTOConvertor;
 import com.example.demo.product.dto.ProductDTO;
 import com.example.demo.product.entity.Product;
+import com.example.demo.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,18 +14,20 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/product")
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
+    private ProductDTOConvertor productDTOConvertor;
 
     @Autowired
-    public ProductController(ProductServiceImpl productServiceImpl) {
-        this.productService = productServiceImpl;
+    public ProductController(ProductService productService, ProductDTOConvertor productDTOConvertor) {
+
+        this.productService = productService;
+        this.productDTOConvertor = productDTOConvertor;
     }
 
-//    //GET all
+    //    //GET all
     @GetMapping("/all")
     public List<ProductDTO> getProducts() {
-        return productService.getAllProducts();
+        return productDTOConvertor.convertAllProductToProductDTO(productService.getAllProducts());
     }
 
     //GET One product by ID
@@ -47,8 +50,7 @@ public class ProductController {
 
     //PUT product by ID (name, description, price and unit)
     @PutMapping
-    public void updateProduct(@RequestBody Product product)
-    {
+    public void updateProduct(@RequestBody Product product) {
         productService.updateProduct(product);
     }
 }

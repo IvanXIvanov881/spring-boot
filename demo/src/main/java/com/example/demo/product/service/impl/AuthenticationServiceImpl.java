@@ -1,6 +1,5 @@
 package com.example.demo.product.service.impl;
 
-import com.example.demo.product.service.AuthenticationService;
 import com.example.demo.product.dto.AuthenticationRequestDTO;
 import com.example.demo.product.dto.AuthenticationResponseDTO;
 import com.example.demo.product.dto.RegisterRequestDTO;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthenticationServiceImpl implements com.example.demo.product.service.AuthenticationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
