@@ -1,6 +1,7 @@
-package com.example.demo.product.user;
+package com.example.demo.product.enums;
 
 public enum Role {
     USER,
     ADMIN
+
 }
